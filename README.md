@@ -1,6 +1,6 @@
-# Ward Anywhere
+# Ward Anytime
 
-**Ward Anywhere** is an SKSE plugin for Skyrim Special Edition (Anniversary Edition) that decouples the **Ward** spell (Lesser Ward, Steadfast Ward, Greater Ward) from the vanilla "must be equipped in a hand" requirement.
+**Ward Anytime** is an SKSE plugin for Skyrim Special Edition (Anniversary Edition) that decouples the **Ward** spell (Lesser Ward, Steadfast Ward, Greater Ward) from the vanilla "must be equipped in a hand" requirement.
 
 Hold a configurable hotkey (with an optional modifier key) and your Ward goes up — no matter what's equipped in either hand: a weapon, a shield, a spell, both hands, nothing at all, or even fully sheathed. The plugin automatically selects the strongest Ward spell you currently know.
 
@@ -42,11 +42,11 @@ No ESP/ESL, no scripts to install manually, no FOMOD choices.
 
 ## How to use
 
-Hold your configured hotkey (default: see `WardAnywhere.ini`) while you have at least one Ward spell learned. As long as you hold it and have enough magicka, Ward stays active regardless of what's in your hands. Release the key to drop it, same as vanilla.
+Hold your configured hotkey (default: see `WardAnytime.ini`) while you have at least one Ward spell learned. As long as you hold it and have enough magicka, Ward stays active regardless of what's in your hands. Release the key to drop it, same as vanilla.
 
 ## Configuration
 
-Edit `Data/SKSE/Plugins/WardAnywhere.ini`:
+Edit `Data/SKSE/Plugins/WardAnytime.ini`:
 
 ```ini
 [Keybind]
@@ -75,7 +75,7 @@ This project targets AE only (1.6.640–1.6.1170), built with:
 - vcpkg (manifest mode) with the [Color-Glass Studios vcpkg registry](https://gitlab.com/colorglass/vcpkg-colorglass) for `commonlibsse-ng-ae`
 
 ```powershell
-git clone https://github.com/HaidarYusuf-001/WardAnywhere.git
+git clone https://github.com/HaidarYusuf-001/WardAnytime.git
 cd WardAnywhere
 cmake --preset ae
 cmake --build --preset ae
