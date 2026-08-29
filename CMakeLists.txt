@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(WardAnywhere VERSION 1.0.0 LANGUAGES CXX)
+project(WardAnytime VERSION 1.0.0 LANGUAGES CXX)
 
 find_package(CommonLibSSE REQUIRED)
 find_package(SimpleIni CONFIG REQUIRED)
@@ -26,6 +26,6 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    "${CMAKE_CURRENT_SOURCE_DIR}/dist/SKSE/Plugins/WardAnywhere.ini"
+    "${CMAKE_CURRENT_SOURCE_DIR}/dist/SKSE/Plugins/WardAnytime.ini"
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
