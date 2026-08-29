@@ -75,7 +75,7 @@ This project targets AE only (1.6.640–1.6.1170), built with:
 - vcpkg (manifest mode) with the [Color-Glass Studios vcpkg registry](https://gitlab.com/colorglass/vcpkg-colorglass) for `commonlibsse-ng-ae`
 
 ```powershell
-git clone https://github.com/<your-username>/WardAnywhere.git
+git clone https://github.com/HaidarYusuf-001/WardAnywhere.git
 cd WardAnywhere
 cmake --preset ae
 cmake --build --preset ae
