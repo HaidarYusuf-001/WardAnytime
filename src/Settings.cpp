@@ -5,7 +5,7 @@ namespace Settings {
     void Load() {
         CSimpleIniA ini;
         ini.SetUnicode();
-        ini.LoadFile(R"(Data\SKSE\Plugins\WardAnywhere.ini)");
+        ini.LoadFile(R"(Data\SKSE\Plugins\WardAnytime.ini)");
 
         g_mainKey     = static_cast<std::uint32_t>(
             ini.GetLongValue("Keybind", "MainKey", 0x10));   // default: LShift
