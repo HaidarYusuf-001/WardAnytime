@@ -89,7 +89,3 @@ Output DLL land in `build/ae/`.
 - [SKSE Team](https://skse.silverlock.org/)
 - [GabonZ](https://www.nexusmods.com/profile/GabonZ) for Perfectly Valid Wards, used during compatibility testing
 - [powerofthree](https://www.nexusmods.com/profile/powerofthree) for Strange Runes, used during compatibility testing
-
-## License
-
-MIT (or your preferred license — update this section and add a `LICENSE` file before publishing).
