@@ -1,0 +1,27 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "ae",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/ae",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md",
+        "SKSE_SUPPORT_XBYAK": "ON",
+        "CMAKE_MAKE_PROGRAM": "C:/Program Files/CMake/bin/ninja.exe"
+      },
+      "environment": {
+        "PATH": "C:/Program Files/CMake/bin;$penv{PATH}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ae",
+      "configurePreset": "ae",
+      "configuration": "Release"
+    }
+  ]
+}
