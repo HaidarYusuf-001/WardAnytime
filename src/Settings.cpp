@@ -17,13 +17,9 @@ namespace Settings {
         g_spelldrinkerFormID = static_cast<std::uint32_t>(
             ini.GetLongValue("MysticismWards", "SpelldrinkerFormID", 0x3DB99C));
 
-        g_lesserWardCost    = static_cast<float>(ini.GetDoubleValue("Cost", "LesserWard", 16.0));
-        g_steadfastWardCost = static_cast<float>(ini.GetDoubleValue("Cost", "SteadfastWard", 27.0));
-        g_greaterWardCost   = static_cast<float>(ini.GetDoubleValue("Cost", "GreaterWard", 47.0));
-        g_grandWardCost     = static_cast<float>(ini.GetDoubleValue("Cost", "GrandWard", 60.0));
-        g_spelldrinkerCost  = static_cast<float>(ini.GetDoubleValue("Cost", "Spelldrinker", 75.0));
+        g_autoCastOnBlock = ini.GetBoolValue("AutoCast", "OnBlock", false);
 
-        logger::info("Loaded settings: MainKey={:#x} ModifierKey={:#x} RequireModifier={} MysticismPlugin={}",
-            g_mainKey, g_modifierKey, g_requireModifier, g_mysticismPlugin);
+        logger::info("Loaded settings: MainKey={:#x} ModifierKey={:#x} RequireModifier={} MysticismPlugin={} AutoCastOnBlock={}",
+            g_mainKey, g_modifierKey, g_requireModifier, g_mysticismPlugin, g_autoCastOnBlock);
     }
 }

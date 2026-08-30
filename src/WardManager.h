@@ -11,7 +11,6 @@ public:
 
 private:
     RE::SpellItem* GetBestOwnedWard(RE::Actor* a_actor) const;
-    float GetCostPerSecond(RE::SpellItem* a_ward) const;               
     bool HasEnoughMagicka(RE::Actor* a_actor, RE::SpellItem* a_ward, float a_delta) const;
 
     bool _wasHolding = false;

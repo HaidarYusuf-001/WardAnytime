@@ -8,8 +8,6 @@ namespace {
     }
 
     RE::SpellItem* LookupMysticismWard(RE::FormID a_localFormID) {
-        // Returns nullptr safely if Mysticism isn't installed / filename doesn't match —
-        // that's fine, GetBestOwnedWard() just skips it.
         return RE::TESDataHandler::GetSingleton()->LookupForm<RE::SpellItem>(
             a_localFormID, Settings::g_mysticismPlugin);
     }
@@ -30,21 +28,11 @@ RE::SpellItem* WardManager::GetBestOwnedWard(RE::Actor* a_actor) const {
     return nullptr;
 }
 
-float WardManager::GetCostPerSecond(RE::SpellItem* a_ward) const {
-    static auto* spelldrinker = LookupMysticismWard(Settings::g_spelldrinkerFormID);
-    static auto* grandWard    = LookupMysticismWard(Settings::g_grandWardFormID);
-    static auto* greater      = LookupVanillaWard(0x000211f0);
-    static auto* steadfast    = LookupVanillaWard(0x000211f1);
-
-    if (a_ward == spelldrinker) return Settings::g_spelldrinkerCost;
-    if (a_ward == grandWard)    return Settings::g_grandWardCost;
-    if (a_ward == greater)      return Settings::g_greaterWardCost;
-    if (a_ward == steadfast)    return Settings::g_steadfastWardCost;
-    return Settings::g_lesserWardCost;
-}
-
 bool WardManager::HasEnoughMagicka(RE::Actor* a_actor, RE::SpellItem* a_ward, float a_delta) const {
-    float cost = GetCostPerSecond(a_ward) * a_delta;
+    // Real, final cost as calculated by the game for this actor — already includes
+    // perks, enchantments, and any AV changes from other mods (Mysticism, survival, etc.).
+    float costPerSecond = a_ward->CalculateMagickaCost(a_actor);
+    float cost = costPerSecond * a_delta;
     auto current = a_actor->AsActorValueOwner()->GetActorValue(RE::ActorValue::kMagicka);
     return current >= cost;
 }
@@ -53,7 +41,10 @@ void WardManager::Update(float a_delta) {
     auto* player = RE::PlayerCharacter::GetSingleton();
     if (!player) return;
 
-    bool holding = InputHandler::GetSingleton()->IsHoldingWardCombo();
+    bool holdingHotkey = InputHandler::GetSingleton()->IsHoldingWardCombo();
+    bool holdingBlock = Settings::g_autoCastOnBlock && player->IsBlocking();
+    bool holding = holdingHotkey || holdingBlock;
+
     if (!holding) {
         _wasHolding = false;
         return;
@@ -64,7 +55,7 @@ void WardManager::Update(float a_delta) {
 
     if (!HasEnoughMagicka(player, ward, a_delta)) return;
 
-    float cost = GetCostPerSecond(ward) * a_delta;
+    float cost = ward->CalculateMagickaCost(player) * a_delta;
     player->AsActorValueOwner()->RestoreActorValue(
         RE::ACTOR_VALUE_MODIFIER::kDamage, RE::ActorValue::kMagicka, -cost);
 
