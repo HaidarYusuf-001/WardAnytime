@@ -1,22 +1,28 @@
 #include "WardManager.h"
 #include "InputHandler.h"
+#include "Settings.h"
 
 namespace {
-    RE::SpellItem* LookupWard(RE::FormID a_localFormID) {
+    RE::SpellItem* LookupVanillaWard(RE::FormID a_localFormID) {
         return RE::TESDataHandler::GetSingleton()->LookupForm<RE::SpellItem>(a_localFormID, "Skyrim.esm");
     }
 
-    constexpr float kLesserWardCostPerSec    = 16.0f;
-    constexpr float kSteadfastWardCostPerSec = 27.0f;
-    constexpr float kGreaterWardCostPerSec   = 47.0f;
+    RE::SpellItem* LookupMysticismWard(RE::FormID a_localFormID) {
+        // Returns nullptr safely if Mysticism isn't installed / filename doesn't match —
+        // that's fine, GetBestOwnedWard() just skips it.
+        return RE::TESDataHandler::GetSingleton()->LookupForm<RE::SpellItem>(
+            a_localFormID, Settings::g_mysticismPlugin);
+    }
 }
 
 RE::SpellItem* WardManager::GetBestOwnedWard(RE::Actor* a_actor) const {
-    static auto* greater   = LookupWard(0x000211f0);
-    static auto* steadfast = LookupWard(0x000211f1);
-    static auto* lesser    = LookupWard(0x00013018);
+    static auto* spelldrinker = LookupMysticismWard(Settings::g_spelldrinkerFormID);
+    static auto* grandWard    = LookupMysticismWard(Settings::g_grandWardFormID);
+    static auto* greater      = LookupVanillaWard(0x0005AD61);
+    static auto* steadfast    = LookupVanillaWard(0x0005AD60);
+    static auto* lesser       = LookupVanillaWard(0x0000014C);
 
-    for (auto* ward : { greater, steadfast, lesser }) {
+    for (auto* ward : { spelldrinker, grandWard, greater, steadfast, lesser }) {
         if (ward && a_actor->HasSpell(ward)) {
             return ward;
         }
@@ -25,12 +31,16 @@ RE::SpellItem* WardManager::GetBestOwnedWard(RE::Actor* a_actor) const {
 }
 
 float WardManager::GetCostPerSecond(RE::SpellItem* a_ward) const {
-    static auto* greater   = LookupWard(0x000211f0);
-    static auto* steadfast = LookupWard(0x000211f1);
+    static auto* spelldrinker = LookupMysticismWard(Settings::g_spelldrinkerFormID);
+    static auto* grandWard    = LookupMysticismWard(Settings::g_grandWardFormID);
+    static auto* greater      = LookupVanillaWard(0x0005AD61);
+    static auto* steadfast    = LookupVanillaWard(0x0005AD60);
 
-    if (a_ward == greater)   return kGreaterWardCostPerSec;
-    if (a_ward == steadfast) return kSteadfastWardCostPerSec;
-    return kLesserWardCostPerSec;
+    if (a_ward == spelldrinker) return Settings::g_spelldrinkerCost;
+    if (a_ward == grandWard)    return Settings::g_grandWardCost;
+    if (a_ward == greater)      return Settings::g_greaterWardCost;
+    if (a_ward == steadfast)    return Settings::g_steadfastWardCost;
+    return Settings::g_lesserWardCost;
 }
 
 bool WardManager::HasEnoughMagicka(RE::Actor* a_actor, RE::SpellItem* a_ward, float a_delta) const {
@@ -50,7 +60,7 @@ void WardManager::Update(float a_delta) {
     }
 
     auto* ward = GetBestOwnedWard(player);
-    if (!ward) return;  
+    if (!ward) return;
 
     if (!HasEnoughMagicka(player, ward, a_delta)) return;
 

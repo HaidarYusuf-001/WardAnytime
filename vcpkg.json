@@ -2,7 +2,7 @@
   "name": "wardanywhere",
   "version": "1.0.0",
   "dependencies": [
-    "commonlibsse-ng-ae",
+    "commonlibsse-ng-flatrim",
     "simpleini"
   ],
   "builtin-baseline": "3f7b5a12ef0a55e7b59339b2b69cac4b56d6dbf9"
