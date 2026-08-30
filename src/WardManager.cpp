@@ -18,9 +18,9 @@ namespace {
 RE::SpellItem* WardManager::GetBestOwnedWard(RE::Actor* a_actor) const {
     static auto* spelldrinker = LookupMysticismWard(Settings::g_spelldrinkerFormID);
     static auto* grandWard    = LookupMysticismWard(Settings::g_grandWardFormID);
-    static auto* greater      = LookupVanillaWard(0x0005AD61);
-    static auto* steadfast    = LookupVanillaWard(0x0005AD60);
-    static auto* lesser       = LookupVanillaWard(0x0000014C);
+    static auto* greater      = LookupVanillaWard(0x000211f0);
+    static auto* steadfast    = LookupVanillaWard(0x000211f1);
+    static auto* lesser       = LookupVanillaWard(0x00013018);
 
     for (auto* ward : { spelldrinker, grandWard, greater, steadfast, lesser }) {
         if (ward && a_actor->HasSpell(ward)) {
@@ -33,8 +33,8 @@ RE::SpellItem* WardManager::GetBestOwnedWard(RE::Actor* a_actor) const {
 float WardManager::GetCostPerSecond(RE::SpellItem* a_ward) const {
     static auto* spelldrinker = LookupMysticismWard(Settings::g_spelldrinkerFormID);
     static auto* grandWard    = LookupMysticismWard(Settings::g_grandWardFormID);
-    static auto* greater      = LookupVanillaWard(0x0005AD61);
-    static auto* steadfast    = LookupVanillaWard(0x0005AD60);
+    static auto* greater      = LookupVanillaWard(0x000211f0);
+    static auto* steadfast    = LookupVanillaWard(0x000211f1);
 
     if (a_ward == spelldrinker) return Settings::g_spelldrinkerCost;
     if (a_ward == grandWard)    return Settings::g_grandWardCost;
