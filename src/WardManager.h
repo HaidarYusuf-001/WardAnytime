@@ -14,4 +14,5 @@ private:
     bool HasEnoughMagicka(RE::Actor* a_actor, RE::SpellItem* a_ward, float a_delta) const;
 
     bool _wasHolding = false;
+    bool _toggleState = false;   // now owned here, not in InputHandler
 };
