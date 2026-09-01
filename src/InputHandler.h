@@ -1,8 +1,14 @@
 #pragma once
 #include "Settings.h"
+#include <chrono>
 
 class InputHandler : public RE::BSTEventSink<RE::InputEvent*> {
 public:
+    struct KeyState {
+        bool down = false;
+        std::chrono::steady_clock::time_point lastSeen{};
+    };
+
     static InputHandler* GetSingleton() {
         static InputHandler singleton;
         return &singleton;
@@ -13,7 +19,6 @@ public:
 
     bool IsComboHeld() const { return ComboPressed(); }
 
-    // Returns true exactly once per rising edge (key-down transition), then resets.
     bool ConsumeJustPressed() {
         bool result = _justPressed;
         _justPressed = false;
@@ -23,16 +28,21 @@ public:
 private:
     InputHandler() = default;
 
+    // "Really held" = flagged down AND refreshed recently. Self-heals if an
+    // up-event ever gets missed (e.g. very fast taps), instead of sticking forever.
+    static bool IsReallyHeld(const KeyState& s) {
+        if (!s.down) return false;
+        auto elapsed = std::chrono::steady_clock::now() - s.lastSeen;
+        return elapsed < std::chrono::milliseconds(150);
+    }
+
     bool ComboPressed() const {
-        bool mainDown = _holdingMainKB || _holdingMainGamepad;
-        bool modifierDown = _holdingModifierKB || _holdingModifierGamepad;
+        bool mainDown = IsReallyHeld(_mainKB) || IsReallyHeld(_mainGamepad);
+        bool modifierDown = IsReallyHeld(_modifierKB) || IsReallyHeld(_modifierGamepad);
         return mainDown && (!Settings::g_requireModifier || modifierDown);
     }
 
-    bool _holdingMainKB = false;
-    bool _holdingModifierKB = false;
-    bool _holdingMainGamepad = false;
-    bool _holdingModifierGamepad = false;
+    KeyState _mainKB, _modifierKB, _mainGamepad, _modifierGamepad;
 
     bool _justPressed = false;
     bool _prevComboPressed = false;

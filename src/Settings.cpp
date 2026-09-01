@@ -29,6 +29,7 @@ namespace Settings {
         g_spelldrinkerFormID = static_cast<std::uint32_t>(ini.GetLongValue("MysticismWards", "SpelldrinkerFormID", 0x3DB99C));
 
         g_autoCastOnBlock = ini.GetBoolValue("AutoCast", "OnBlock", false);
+    g_recastInterval = static_cast<float>(ini.GetDoubleValue("Advanced", "RecastInterval", 0.3));
 
         logger::info("Settings loaded: ToggleMode={} GamepadEnable={} AutoCastOnBlock={} "
             "Restrictions[Magic={} Melee={} Ranged={} Unarmed={} Shielded={} Sheathed={}]",

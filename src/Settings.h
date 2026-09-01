@@ -25,6 +25,7 @@ namespace Settings {
     inline std::uint32_t g_spelldrinkerFormID = 0x3DB99C;
 
     inline bool g_autoCastOnBlock = false;
+inline float g_recastInterval = 0.3f;
 
     void Load();
 }

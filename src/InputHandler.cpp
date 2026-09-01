@@ -1,6 +1,15 @@
 #include "InputHandler.h"
 #include "Settings.h"
 
+namespace {
+    void Touch(InputHandler::KeyState& a_state, bool a_isDown) {
+        a_state.down = a_isDown;
+        if (a_isDown) {
+            a_state.lastSeen = std::chrono::steady_clock::now();
+        }
+    }
+}
+
 RE::BSEventNotifyControl InputHandler::ProcessEvent(
     RE::InputEvent* const* a_event, RE::BSTEventSource<RE::InputEvent*>*) {
 
@@ -13,23 +22,19 @@ RE::BSEventNotifyControl InputHandler::ProcessEvent(
         auto scanCode = static_cast<std::int32_t>(button->GetIDCode());
         bool isDown = button->IsPressed();
 
-        // No device filtering at all - just match raw scancode against every
-        // configured binding. Keyboard (0-255) and gamepad (266-281) ranges
-        // never collide, so this is safe regardless of how the game classifies
-        // the source device.
         if (scanCode == static_cast<std::int32_t>(Settings::g_mainKey)) {
-            _holdingMainKB = isDown;
+            Touch(_mainKB, isDown);
         }
         if (Settings::g_requireModifier && scanCode == static_cast<std::int32_t>(Settings::g_modifierKey)) {
-            _holdingModifierKB = isDown;
+            Touch(_modifierKB, isDown);
         }
 
         if (Settings::g_gamepadEnable) {
             if (scanCode == Settings::g_gamepadMainButton) {
-                _holdingMainGamepad = isDown;
+                Touch(_mainGamepad, isDown);
             }
             if (Settings::g_requireModifier && scanCode == Settings::g_gamepadModifierButton) {
-                _holdingModifierGamepad = isDown;
+                Touch(_modifierGamepad, isDown);
             }
         }
     }
